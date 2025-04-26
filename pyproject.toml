@@ -1,17 +1,14 @@
-[project]
+[tool.poetry]
 name = "guestbook"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "jjjaehong",email = "woghd3014@gmail.com"}
-]
+authors = ["jjjaehong <woghd3014@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "django (>=5.2,<6.0)",
-    "django-cors-headers (>=4.7.0,<5.0.0)"
-]
 
+[tool.poetry.dependencies]
+python = ">=3.12"
+django = ">=5.2,<6.0"
+django-cors-headers = ">=4.7.0,<5.0.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
