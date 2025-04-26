@@ -41,10 +41,11 @@ def guestbook_main(request):
     elif request.method == 'DELETE':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
+        guestbook_id = body.get('id')
         password = body.get('password')
 
         try:
-            guestbook = Guestbook.objects.get(password=password)
+            guestbook = Guestbook.objects.get(id=guestbook_id, password=password)
             guestbook.delete()
             return JsonResponse({'message': 'deleted successfully'}, status=200)
         except Guestbook.DoesNotExist:
