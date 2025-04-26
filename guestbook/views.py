@@ -10,16 +10,20 @@ from django.views.decorators.csrf import csrf_exempt
 def guestbook_main(request):
     if request.method == 'GET':
         guestbooks = Guestbook.objects.all().order_by('-created')
-        data = [
-            {
+        guestbooks = []
+        for guestbook in Guestbook.objects.all().order_by('-created'):
+            guestbooks.append({
                 'title': guestbook.title,
                 'name': guestbook.name,
                 'content': guestbook.content,
                 'created': guestbook.created,
-            }
-            for guestbook in guestbooks
-        ]
-        return JsonResponse({'guestbooks': data}, status=200)
+            })
+        return JsonResponse({
+                
+                'status': 200,
+                'message': 'Guestbook entries retrieved successfully',
+                'data': guestbooks
+        })
     elif request.method == 'POST':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
@@ -37,7 +41,18 @@ def guestbook_main(request):
         )
         guestbook.save()
 
-        return JsonResponse({'message': 'Guestbook entry created successfully'}, status=201)
+        return JsonResponse({
+            'status': 200,
+            'message': 'Guestbook entry created successfully',
+            'data': {
+               'title': guestbook.title,
+               'name': guestbook.name,
+               'content': guestbook.content,
+               'created': guestbook.created
+            }
+        })
+
+    
     elif request.method == 'DELETE':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
@@ -47,9 +62,19 @@ def guestbook_main(request):
         try:
             guestbook = Guestbook.objects.get(id=guestbook_id, password=password)
             guestbook.delete()
-            return JsonResponse({'message': 'deleted successfully'}, status=200)
+            return JsonResponse({
+                'status': 200,
+                'message': 'deleted successfully'
+,               'data' : None
+            })
         except Guestbook.DoesNotExist:
-            return JsonResponse({'error': 'incorrect password'}, status=404)
+            return JsonResponse({
+                'status': 404,
+                'error': 'incorrect password'
+            })
     else:
-        return JsonResponse({'error': 'Invalid request method'}, status=400)        
+        return JsonResponse({
+            'status': 405,
+            'error': 'Invalid request method'
+        })        
         
