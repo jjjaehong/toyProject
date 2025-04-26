@@ -1,0 +1,3 @@
+Watching for file changes with StatReloader
+[26/Apr/2025 15:41:00] "GET /guestbook/ HTTP/1.1" 200 18
+[26/Apr/2025 15:41:06] "POST /guestbook/ HTTP/1.1" 201 51
