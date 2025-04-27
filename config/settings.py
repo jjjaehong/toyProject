@@ -69,6 +69,7 @@ INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
 	'corsheaders.middleware.CorsMiddleware', # 반드시 가장 위쪽에 추가
+    'guestbook.middlewares.RequestLoggingMiddleware',
     "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -165,3 +166,50 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] [{levelname}] {message}',
+            'style': '{',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file_all': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/all_requests.log',
+            'formatter': 'verbose',
+        },
+        'file_error': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/errors.log',
+            'formatter': 'verbose',
+        },
+    },
+
+    'loggers': {
+        'request_logger': {
+            'handlers': ['console', 'file_all'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['console', 'file_error'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+    }
+}
+
+
