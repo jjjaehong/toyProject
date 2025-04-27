@@ -13,10 +13,10 @@ def guestbook_main(request):
         guestbooks = []
         for guestbook in Guestbook.objects.all().order_by('-created'):
             guestbooks.append({
+                'created': guestbook.created,
                 'title': guestbook.title,
                 'name': guestbook.name,
                 'content': guestbook.content,
-                'created': guestbook.created,
             })
         return JsonResponse({
                 
@@ -45,10 +45,10 @@ def guestbook_main(request):
             'status': 200,
             'message': 'Guestbook entry created successfully',
             'data': {
+               'created': guestbook.created,
                'title': guestbook.title,
                'name': guestbook.name,
-               'content': guestbook.content,
-               'created': guestbook.created
+               'content': guestbook.content
             }
         })
 
