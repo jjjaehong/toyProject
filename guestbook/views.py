@@ -13,6 +13,7 @@ def guestbook_main(request):
         guestbooks = []
         for guestbook in Guestbook.objects.all().order_by('-created'):
             guestbooks.append({
+                'id': guestbook.id,
                 'created': guestbook.created,
                 'title': guestbook.title,
                 'name': guestbook.name,
@@ -45,6 +46,7 @@ def guestbook_main(request):
             'status': 200,
             'message': 'Guestbook entry created successfully',
             'data': {
+               'id': guestbook.id,
                'created': guestbook.created,
                'title': guestbook.title,
                'name': guestbook.name,
@@ -71,7 +73,7 @@ def guestbook_main(request):
             return JsonResponse({
                 'status': 404,
                 'error': 'incorrect password'
-            })
+            }, status=404)
     else:
         return JsonResponse({
             'status': 405,
